@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShowMe</string>
+    <!-- Replace with your deployed ShowMe website origin, e.g. https://showmeofficial.vercel.app -->
+    <string name="showme_api_base_url">https://showmeofficial.vercel.app</string>
+    <!-- Replace with the Google OAuth Web client ID used by your Supabase Google provider. -->
+    <string name="google_web_client_id">261083221735-sasnaf036vbdnah5hd3n8gckc280od5n.apps.googleusercontent.com</string>
+</resources>

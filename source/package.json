@@ -1,0 +1,7 @@
+{
+  "name": "showme-ai",
+  "version": "2.0.0",
+  "private": true,
+  "description": "ShowMe AI chat – static front-end + Vercel functions + Supabase auth",
+  "engines": { "node": ">=18" }
+}
