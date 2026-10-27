@@ -14,6 +14,7 @@ jobs:
   build:
     name: Build debug APK
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -24,21 +25,25 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: "8.9"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Install Android SDK packages
         run: |
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+          yes | sdkmanager --licenses || true
+          sdkmanager \
             "platform-tools" \
             "platforms;android-35" \
             "build-tools;35.0.0"
 
+      - name: Generate Gradle wrapper if missing
+        run: |
+          if [ ! -f ./gradlew ]; then
+            gradle wrapper --gradle-version 8.9
+          fi
+
       - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
+        run: ./gradlew --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
