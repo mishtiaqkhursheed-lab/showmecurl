@@ -1,0 +1,827 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#e9f0f4"><title>ShowMe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#38bdf8;--g2:#0ea5e9;--tx:#061d2b;--mu:#62767e;--gl:rgba(255,255,255,.5);--gl2:rgba(255,255,255,.55);--bd:rgba(255,255,255,.95);--sh:0 12px 36px rgba(14,165,233,.14),inset 0 1px 0 rgba(255,255,255,.95);--glow:rgba(100,203,255,.75)}
+[data-t=dark]{--tx:#e5eef3;--mu:#99a9b1;--gl:rgba(18,32,39,.62);--gl2:rgba(30,50,60,.55);--bd:rgba(122,210,255,.22);--sh:0 12px 36px rgba(0,0,0,.45);--glow:rgba(48,179,246,.55)}
+*{box-sizing:border-box;margin:0;font-family:Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,"DejaVu Sans","Liberation Sans",system-ui,sans-serif}
+html,body{height:100%}body{background:#e8eff3 center/cover fixed;color:var(--tx);overflow:hidden;position:relative}
+[data-t=dark] body::before{content:"";position:fixed;inset:0;background:rgba(4,11,15,.9);z-index:-1}
+button{cursor:pointer;border:0;background:none;color:inherit;font:inherit}
+svg.i{width:1.3em;height:1.3em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.gl{background:var(--gl);border:1px solid var(--bd);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);box-shadow:var(--sh);border-radius:28px;position:relative}
+.glow{border:1.5px solid var(--glow);box-shadow:0 0 0 5px rgba(117,208,255,.14),0 12px 36px rgba(56,189,248,.2),inset 0 0 26px rgba(136,215,255,.25)}
+.lg{filter:drop-shadow(0 6px 14px rgba(56,189,248,.25))}
+.ic{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#f1faff,#bce8ff);display:grid;place-items:center;color:var(--g2);flex-shrink:0;box-shadow:0 5px 14px rgba(56,189,248,.22),inset 0 1px 0 #fff}
+[data-t=dark] .ic{background:radial-gradient(circle,#1a394a,#112732)}
+#app{display:flex;height:calc(100% - 36px);margin:18px;gap:18px;padding:14px;border-radius:44px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.85);box-shadow:inset 0 0 40px rgba(136,215,255,.18),0 20px 60px rgba(14,165,233,.14)}
+aside{width:min(27vw,400px);min-width:290px;display:flex;flex-direction:column;padding:22px 18px 18px;flex-shrink:0;border-radius:36px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:26px;padding:0 4px}.brand img{width:58px}.brand b{font-size:34px;font-weight:600;display:block;line-height:1;letter-spacing:-.5px}.brand small{color:var(--mu);font-size:15px;letter-spacing:.4px;display:block;margin-top:6px}
+.sqb{width:46px;height:46px;border-radius:15px;background:var(--gl2);border:1px solid var(--bd);display:grid;place-items:center;box-shadow:var(--sh)}.brand .sqb{margin-left:auto;align-self:flex-start}
+.nv{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:18px;width:100%;font-size:19px;text-align:left;margin-bottom:6px;transition:.2s;border:1px solid transparent}.nv svg{width:27px;height:27px}
+.nv:hover{background:rgba(56,189,248,.12)}.nv.on{background:linear-gradient(90deg,rgba(106,205,255,.5),rgba(169,226,255,.35));border-color:rgba(61,183,246,.55);box-shadow:0 6px 18px rgba(56,189,248,.22),inset 0 1px 0 #fff}
+.nv small{margin-left:auto;color:var(--mu);font-size:15px}
+#q{width:100%;padding:10px 14px;border-radius:14px;border:1px solid var(--bd);background:var(--gl2);color:var(--tx);margin:6px 0 0;outline:0;font-size:14px;display:none}#q.s{display:block}
+.rc{margin-top:18px;padding:20px 8px 10px;border-top:1px solid rgba(97,136,157,.28);color:var(--mu);font-size:17px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+#list{flex:1;overflow:auto}.ci{display:flex;gap:12px;align-items:center;padding:12px 12px;border-radius:15px;font-size:15px;cursor:pointer;margin-bottom:2px}.ci:hover{background:rgba(56,189,248,.12)}.ci.on{background:rgba(139,210,245,.55)}
+.ci span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ci small{color:var(--mu);font-size:13px}.ci svg{color:var(--mu);width:22px;height:22px}
+.me{display:flex;gap:14px;align-items:center;padding:18px 8px 2px;border-top:1px solid rgba(97,136,157,.28);cursor:pointer;margin-top:8px}.av{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 50% 36%,#e7b995 0 20%,transparent 21%),radial-gradient(ellipse at 50% 100%,#2b3c42 0 40%,transparent 41%),#1c272b;border:2px solid #fff;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.me b{font-weight:500;font-size:16px;display:block}.me small{color:var(--mu);font-size:13px}.me>svg{margin-left:auto;color:var(--mu)}
+.mini aside{width:98px;min-width:98px}.mini .tx,.mini #list,.mini .rc,.mini .brand div,.mini .me div,.mini .me>svg,.mini .nv small{display:none}.mini .nv{justify-content:center}.mini .brand{flex-direction:column}.mini .brand .sqb{margin:0}
+main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;padding:4px 14px 0}
+.top{display:flex;align-items:center;gap:14px;min-height:64px;padding:4px 0}.sp{flex:1}
+.gh{width:52px;height:52px;display:grid;place-items:center;position:relative;border-radius:16px}.gh svg{width:26px;height:26px}.vd{width:1px;height:30px;background:rgba(97,136,157,.35)}
+.dot::after{content:"";position:absolute;top:10px;right:11px;width:10px;height:10px;border-radius:50%;background:#38bdf8;border:2px solid #fff}
+.sq{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;position:relative}.sq svg{width:27px;height:27px}
+.mbrand{display:none!important;align-items:center;gap:10px}.mbrand img{width:46px}.mbrand b{font-size:30px;font-weight:600;display:block;line-height:1.05}.mbrand small{color:var(--mu);font-size:13px;white-space:pre}
+#scroll{flex:1;overflow:auto;padding:0 2px}
+.home{max-width:900px;margin:0 auto;text-align:center;padding-bottom:16px}.hlogo{width:215px;margin:0 auto;display:block}
+.home h1{font-size:50px;font-weight:600;letter-spacing:-1px;line-height:1.05;margin-top:-6px}.home h1 em{font-style:normal;color:var(--g)}.home .tag{color:var(--mu);font-size:19px;margin:8px 0 18px}
+.chips{display:flex;gap:14px;justify-content:center;margin-bottom:20px}.chip{padding:8px 20px 8px 8px;border-radius:99px;display:flex;gap:10px;align-items:center;font-size:15px;background:var(--gl2);border:1px solid var(--bd);box-shadow:var(--sh)}.chip .ic{width:34px;height:34px;box-shadow:none}.chip svg{width:19px;height:19px}
+.big{padding:24px 28px 28px;text-align:left;border-radius:34px;max-width:850px;margin:0 auto}.big>h3{font-weight:400;font-size:18px;display:flex;gap:14px;align-items:center;margin-bottom:16px}.big>h3 .ic{width:44px;height:44px;background:none;box-shadow:none}.big>h3 svg{width:30px;height:30px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{padding:20px 22px;border-radius:22px;background:var(--gl2);border:1px solid var(--bd);display:flex;gap:18px;align-items:center;cursor:pointer;transition:.2s;box-shadow:var(--sh);min-height:112px}.card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(56,189,248,.25)}
+.card b{display:block;font-weight:500;font-size:18px;margin-bottom:6px}.card small{max-width:270px;color:var(--mu);font-size:14.5px;line-height:1.45;display:block}.card>svg:last-child{margin-left:auto;color:var(--mu);width:22px;height:22px}
+.mq,.rcp{display:none!important}
+.quick{display:flex;align-items:center;gap:8px;padding:12px;margin:0 0 18px;border-radius:26px}.qi{flex:1;text-align:center;font-size:15px;color:var(--mu);padding:12px 2px 10px;line-height:1.3;border-radius:20px;background:var(--gl2);border:1px solid var(--bd)}.qi .ic{margin:0 auto 8px;width:44px;height:44px}.qi svg{width:22px;height:22px}
+.nx{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#e6f7ff,#7dd3fc);display:grid;place-items:center;color:var(--g2);flex-shrink:0;box-shadow:0 5px 14px rgba(56,189,248,.3)}
+.rcp{padding:18px 18px 8px;text-align:left;margin-bottom:12px}.rh{display:flex;align-items:center;gap:12px;font-size:19px;margin-bottom:6px}.rh a{margin-left:auto;font-size:15px;color:var(--mu);display:flex;gap:6px;align-items:center;cursor:pointer}.rh a svg{width:18px;height:18px}
+.ri{display:flex;gap:14px;align-items:center;padding:12px 0;cursor:pointer}.ri .ic{width:46px;height:46px}.ri .ic svg{width:21px;height:21px}.ri div.t{flex:1;min-width:0}.ri b{display:block;font-weight:500;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ri small{color:var(--mu);font-size:13.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}.ri em{font-style:normal;color:var(--mu);font-size:13px;white-space:nowrap}.ri svg.k{color:var(--tx);width:20px;height:20px}
+.msg{max-width:860px;margin:14px auto;display:flex}.msg.u{justify-content:flex-end}
+.bub{padding:14px 18px;border-radius:22px;line-height:1.65;font-size:15.5px;max-width:100%;overflow:hidden}.u .bub{background:linear-gradient(135deg,#7dd3fc,#0ea5e9);color:#fff;border-bottom-right-radius:6px;box-shadow:0 8px 20px rgba(56,189,248,.32)}.a .bub{background:var(--gl);border:1px solid var(--bd);box-shadow:var(--sh);border-bottom-left-radius:6px;backdrop-filter:blur(20px)}
+.bub p{margin:6px 0}.bub h3{margin:12px 0 4px;color:var(--g2);font-size:17px}.bub ul{margin:6px 0 6px 20px}.bub li{margin:4px 0}.bub li::marker{color:var(--g)}
+.bub blockquote{border-left:4px solid var(--g);padding:8px 16px;margin:12px 0;font-style:italic;background:rgba(56,189,248,.1);border-radius:0 14px 14px 0}
+.tw{overflow:auto;margin:12px 0;border-radius:16px;border:1px solid rgba(56,189,248,.4)}table{border-collapse:collapse;width:100%;font-size:14px}th{background:rgba(56,189,248,.25);text-align:left}td,th{padding:10px 14px;border-bottom:1px solid var(--bd)}tr:last-child td{border:0}
+code.i{background:rgba(56,189,248,.15);padding:1px 6px;border-radius:6px}
+.term{background:#090c0e;border-radius:16px;margin:12px 0;overflow:hidden;border:1px solid #122630;color:#bee9ff;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.th{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#10171a;font-size:12px;flex-wrap:wrap}.th s{width:11px;height:11px;border-radius:50%;background:#ff5f56}.th s:nth-child(2){background:#ffbd2e}.th s:nth-child(3){background:#25b3f8}.th em{font-style:normal;color:#8fb;margin:0 auto 0 8px}.th button{padding:5px 11px;border-radius:9px;background:#132630;color:#87d7ff;font-size:12px}.th button:hover{background:#19394a}
+pre{padding:14px;overflow:auto;font:13px/1.55 ui-monospace,Consolas,monospace;white-space:pre;color:#afe4ff}
+.dots span{animation:b 1s infinite;display:inline-block;color:var(--g)}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}@keyframes b{50%{opacity:.2}}
+/* ── Think box ── */
+.think-wrap{background:rgba(56,189,248,.07);border-left:3px solid #38bdf8;border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:10px;font-size:13px}
+.think-wrap summary{cursor:pointer;font-weight:600;color:#38bdf8;user-select:none;list-style:none;display:flex;align-items:center;gap:6px}
+.think-wrap summary::-webkit-details-marker{display:none}
+.think-wrap summary::after{content:'▼';font-size:10px;margin-left:auto;transition:transform .2s}
+.think-wrap[open] summary::after{transform:rotate(180deg)}
+.think-body{color:var(--mu);line-height:1.6;margin-top:8px;white-space:pre-wrap;font-size:12.5px;max-height:260px;overflow-y:auto}
+/* Thinking pulse */
+.thinking-anim{display:flex;align-items:center;gap:8px;color:#38bdf8;font-size:13px;font-style:italic;padding:4px 0}
+.thinking-anim span{width:7px;height:7px;border-radius:50%;background:#38bdf8;animation:tpulse 1.4s ease-in-out infinite}
+.thinking-anim span:nth-child(2){animation-delay:.2s}.thinking-anim span:nth-child(3){animation-delay:.4s}
+@keyframes tpulse{0%,80%,100%{transform:scale(.55);opacity:.3}40%{transform:scale(1);opacity:1}}
+/* Typewriter cursor */
+.tw-cursor{display:inline-block;width:2px;height:.9em;background:var(--tx);margin-left:1px;vertical-align:text-bottom;animation:twc .65s step-end infinite}
+@keyframes twc{0%,100%{opacity:1}50%{opacity:0}}
+.think-wrap.fold .think-body{display:none}
+.think-wrap.fold .fb svg{transform:rotate(-90deg)}
+.think-th{display:flex;align-items:center;gap:6px;font-weight:600;color:#38bdf8;margin-bottom:0;cursor:default}.think-th .fb{margin-left:auto;padding:3px 8px;border-radius:8px;background:rgba(56,189,248,.12);color:#38bdf8}
+.think-th .fb svg{width:14px;height:14px;transition:transform .2s}
+.comp{margin:10px auto 14px;width:100%;max-width:940px;padding:14px 20px 14px;border-radius:30px}
+.attbar{display:none;gap:8px;flex-wrap:wrap;padding:0 4px 8px}.attbar.s{display:flex}.attbar span{padding:5px 12px;border-radius:99px;background:rgba(56,189,248,.2);font-size:13px;display:flex;gap:8px;align-items:center}.attbar a{cursor:pointer;opacity:.7}
+.row{display:flex;align-items:center;gap:12px;position:relative}.row .clip{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;padding-right:0}.row .clip svg{width:26px;height:26px}.row .sep{width:1px;height:34px;background:rgba(97,136,157,.35)}
+.row textarea{flex:1;border:0;background:none;outline:0;resize:none;font-size:18px;color:var(--tx);max-height:120px;padding:10px 4px;height:46px;min-width:0}.row textarea::placeholder{color:var(--mu);white-space:nowrap}
+.mpill{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--gl2);border:1px solid var(--bd);font-size:13.5px;white-space:nowrap}.mpill svg{width:16px;height:16px}
+.mp{position:absolute;right:60px;bottom:64px;width:270px;padding:8px;display:none;z-index:6;background:rgba(246,253,251,.96);border-radius:22px}[data-t=dark] .mp{background:rgba(15,27,33,.97)}.mp.s{display:block}
+.mp button{display:flex;width:100%;gap:10px;align-items:center;padding:11px 12px;border-radius:15px;text-align:left}.mp button:hover,.mp button.on{background:rgba(56,189,248,.16)}.mp b{display:block;font-weight:600;font-size:15px}.mp small{color:var(--mu);font-size:12.5px}.mp button svg:last-child{margin-left:auto;color:var(--g2);opacity:0}.mp .on svg:last-child{opacity:1}
+.send{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#bae6fd,#38bdf8 60%,#0ea5e9);color:#fff;display:grid;place-items:center;box-shadow:0 8px 22px rgba(56,189,248,.5),inset 0 2px 5px rgba(255,255,255,.6);flex-shrink:0;border:2px solid rgba(255,255,255,.7)}.send svg{width:27px;height:27px;stroke-width:2.4}
+.tools{display:flex;gap:12px;margin-top:10px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.tools::-webkit-scrollbar{display:none}.tl{padding:10px 20px;border-radius:99px;background:var(--gl2);border:1px solid var(--bd);font-size:15px;display:flex;gap:9px;align-items:center;white-space:nowrap;box-shadow:0 4px 12px rgba(14,165,233,.12),inset 0 1px 0 #fff;flex-shrink:0}.tl svg{width:21px;height:21px}.tl.on{background:linear-gradient(135deg,rgba(106,205,255,.6),rgba(56,189,248,.3));border-color:var(--g);font-weight:600}
+.bn,.hi{display:none}
+.md{position:fixed;inset:0;background:rgba(5,18,25,.4);backdrop-filter:blur(6px);display:none;place-items:center;z-index:9;padding:16px}.md.s{display:grid}
+.mb2{width:100%;max-width:480px;padding:26px;max-height:90vh;overflow:auto;background:rgba(246,253,251,.95)}[data-t=dark] .mb2{background:rgba(15,27,33,.96)}
+.mb2 h2{margin-bottom:10px;font-weight:600}.mb2 p{color:var(--mu);font-size:14px;margin-bottom:10px}.mb2 input[type=password]{width:100%;padding:13px;border-radius:14px;border:1px solid var(--bd);background:rgba(255,255,255,.7);color:var(--tx);margin:6px 0 12px;outline:0}
+.btn{padding:11px 20px;border-radius:14px;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;margin:4px 6px 4px 0}.btn.o{background:rgba(56,189,248,.16);color:var(--tx)}
+.fl{font-size:13px;color:var(--mu);margin:8px 0}.fl div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd)}
+@media(max-width:1100px){.cards{grid-template-columns:1fr}.home h1{font-size:46px}}
+@media(max-width:820px){
+body{background-attachment:scroll}
+#app{height:100%;margin:0;padding:max(12px,env(safe-area-inset-top)) 12px max(8px,env(safe-area-inset-bottom));border-radius:0;border:0;background:none;box-shadow:none;gap:0}
+aside,.dq,.mini aside{display:none!important}main{padding:0}.mbrand{display:flex!important}.mq{display:block!important}.quick.mq{display:flex!important}.sq.mq{display:grid!important}.rcp{display:block!important}
+.top{min-height:70px;gap:12px}.sq{width:50px;height:50px;border-radius:16px}.sq svg{width:24px;height:24px}.dot::after{top:9px;right:10px}
+.home h1.mq{font-size:30px;margin-top:2px;letter-spacing:-.5px}.hlogo{width:150px}.home .tag{font-size:15.5px;margin:6px 0 18px}
+.comp{border-radius:28px;padding:11px 14px 10px;margin:4px 0 8px}.row{gap:8px}.row .sep{display:none}.row textarea{font-size:15px}.hlogo{margin-top:8px}.mpill{padding:7px 9px;font-size:12.5px}.send{width:52px;height:52px}.send svg{width:25px;height:25px}.row .clip svg{width:24px;height:24px}
+.tl{padding:9px 16px;font-size:14px}.mp{right:56px;bottom:62px}
+.bn{display:flex;justify-content:space-around;padding:8px;margin:0;border-radius:34px}.bn button{padding:9px 20px;border-radius:26px;font-size:13.5px;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:3px;min-width:76px}.bn .on{background:radial-gradient(circle at 40% 30%,#eef9ff,#b4e6ff);color:var(--g2);font-weight:600;box-shadow:0 5px 14px rgba(56,189,248,.28),inset 0 1px 0 #fff}.bn svg{width:26px;height:26px}
+.hi{display:block;width:34%;height:5px;border-radius:9px;background:#13222b;margin:8px auto 0;opacity:.85}[data-t=dark] .hi{background:#cfe}}
+/* ===== v2 ===== */
+body[data-t=dark]::before{content:"";position:fixed;inset:0;background:rgba(6,23,32,.78);z-index:-1}
+body.cbg{background-size:cover;background-position:center;background-attachment:fixed}
+body.cbg[data-t=dark]::before{background:rgba(6,23,32,.3)}
+/* fully transparent message templates */
+.msg .bub{background:transparent!important;box-shadow:none!important;backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid rgba(255,255,255,.3);color:var(--tx);text-shadow:0 0 8px rgba(255,255,255,.55)}
+[data-t=dark] .msg .bub{border-color:rgba(160,223,255,.22);text-shadow:0 0 8px rgba(0,0,0,.55)}
+.u .bub{border-color:rgba(56,189,248,.5)}
+body.cbg .msg .bub{backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.bub blockquote,.bub .tw{background:transparent}
+/* chat uses the full width; grows when the sidebar is hidden */
+.msg{max-width:100%;width:100%;margin:12px 0}
+.bub.w{width:100%}
+.comp{max-width:780px;transition:max-width .25s}
+body.mini aside{display:none}body.mini .comp{max-width:1200px}body.mini .home{max-width:1200px}
+.sbt{display:none}body.mini .sbt{display:grid}
+/* white terminal with VS Code-style colours */
+.term{background:#fff;border:1px solid #d6dfe4;color:#1f2528;box-shadow:0 6px 20px rgba(14,165,233,.12);text-shadow:none}
+.th{background:#f3f4f7;border-bottom:1px solid #e3eaee}.th em{color:#57646a}
+.th button{background:#e6f1f6;color:#0284c7}.th button:hover{background:#d3e7f1}
+.term pre{background:#fff;color:#3b3b3b;padding:14px;font:13px/1.6 "Cascadia Code",Consolas,ui-monospace,monospace;tab-size:4}
+.tk-c{color:#008000;font-style:italic}.tk-s{color:#a31515}.tk-sv{color:#0000ff}.tk-n{color:#098658}.tk-kb{color:#0000ff}.tk-kc{color:#af00db}
+.tk-t{color:#267f99}.tk-f{color:#795e26}.tk-v{color:#001080}.tk-p{color:#800000}.tk-at{color:#e50000}.tk-key{color:#0451a5}.tk-o{color:#3b3b3b}
+.tk-b0{color:#0431fa}.tk-b1{color:#319331}.tk-b2{color:#7b3814}
+/* compact DeepSeek-style message box */
+.comp{padding:10px 14px 10px;border-radius:24px;margin:6px auto 10px}
+.comp textarea{display:block;width:100%;border:0;background:none;outline:0;resize:none;font-size:15.5px;color:var(--tx);height:36px;max-height:120px;padding:6px 4px}
+.comp textarea::placeholder{color:var(--mu)}
+.crow{display:flex;align-items:center;gap:8px;position:relative;margin-top:4px}
+.crow .tl{padding:6px 13px;font-size:13.5px;box-shadow:none}.crow .tl svg{width:17px;height:17px}
+.crow .mpill{padding:6px 10px;font-size:12.5px}
+.send{width:36px;height:36px;border-width:1px;box-shadow:0 4px 12px rgba(56,189,248,.35)}.send svg{width:19px;height:19px}
+.mp{right:0;bottom:calc(100% + 10px)}
+.kbox{border:1px solid var(--bd);border-radius:18px;padding:12px 14px;margin:10px 0;background:rgba(255,255,255,.25)}
+.kbox h3{font-size:16px;margin-bottom:4px}.kbox h3 small{font-weight:400;font-size:12px;color:var(--mu);margin-left:6px}
+#scrim{display:none}
+@media(max-width:820px){
+.bn,.hi{display:none!important}.nv.ex{display:none}
+.sbt{display:grid}.top{gap:8px}
+aside{display:flex!important;position:fixed;left:0;top:0;bottom:0;width:min(84vw,340px);min-width:0;z-index:30;border-radius:0 28px 28px 0;transform:translateX(-110%);transition:transform .28s;padding-top:max(22px,env(safe-area-inset-top));background:rgba(244,251,255,.94)}
+[data-t=dark] aside{background:rgba(14,35,46,.96)}
+body.drawer aside{transform:none}
+body.drawer #scrim{display:block;position:fixed;inset:0;background:rgba(8,29,40,.35);z-index:25}
+.comp{border-radius:22px;padding:8px 12px 8px;margin:4px 0 8px;max-width:100%}
+.crow .tl{padding:6px 11px;font-size:13px}.send{width:34px;height:34px}.mp{right:0;bottom:calc(100% + 8px)}
+}
+/* ===== v3 ===== */
+#scroll{scrollbar-width:none;-ms-overflow-style:none}#scroll::-webkit-scrollbar{display:none;width:0;height:0}
+.msg .bub{background:rgba(255,255,255,.06)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+[data-t=dark] .msg .bub{background:rgba(255,255,255,.04)!important}
+body.cbg .msg .bub{backdrop-filter:blur(11px)!important;-webkit-backdrop-filter:blur(11px)!important}
+/* multiline terminal */
+.term{border-radius:16px}
+.th{gap:8px;padding:9px 12px}
+.th em{margin:0 auto 0 8px;font-weight:600;letter-spacing:.6px;font-size:11.5px}
+.th button{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;background:#eaf6fd;color:#0284c7}
+.th button:hover{background:#d5eefb}.th button svg{width:15px;height:15px}
+.th .dlb{background:linear-gradient(135deg,#7dd3fc,#0ea5e9);color:#fff;box-shadow:0 4px 12px rgba(14,165,233,.45);padding:6px 15px}
+.th .dlb:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.cb{display:flex;overflow:auto;max-height:68vh;background:#fff}
+.cb pre{margin:0;overflow:visible;white-space:pre;font:13px/1.65 "Cascadia Code",Consolas,"DejaVu Sans Mono",ui-monospace,monospace;tab-size:4;padding:14px 0}
+.cb .gut{position:sticky;left:0;text-align:right;color:#9aa7b5;background:#f8fafc;border-right:1px solid #e8edf3;padding:14px 10px 14px 14px;user-select:none;-webkit-user-select:none;flex-shrink:0}
+.cb .cd{padding:14px 18px;flex:1;min-width:max-content}
+/* animated sky-blue border */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.comp{position:relative}
+.comp::before{content:"";position:absolute;inset:-2px;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--a),transparent 0deg,#bae6fd 50deg,#38bdf8 110deg,#0ea5e9 170deg,#7dd3fc 230deg,transparent 300deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude;animation:cspin 3.2s linear infinite}
+@keyframes cspin{to{--a:360deg}}
+.comp.glow{border-color:rgba(56,189,248,.35);box-shadow:0 0 22px rgba(56,189,248,.22),0 10px 30px rgba(14,165,233,.12)}
+.btn{background:linear-gradient(135deg,#38bdf8,#0ea5e9)}
+
+/* ===== v4: sky blue everywhere + full-black, transparent (non-liquid) dark mode ===== */
+body[data-t=dark]{--tx:#f1f6f9;--mu:#8d99a1;--gl:transparent;--gl2:transparent;--bd:rgba(255,255,255,.16);--sh:none;--glow:rgba(56,189,248,.5);background:#000!important;background-image:none!important}
+body[data-t=dark]::before,body.cbg[data-t=dark]::before{background:#000!important}
+[data-t=dark] #app{background:transparent;border-color:transparent;box-shadow:none}
+[data-t=dark] .gl{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
+[data-t=dark] .glow,[data-t=dark] .comp.glow{border:1.5px solid rgba(56,189,248,.4);box-shadow:none!important}
+[data-t=dark] .lg{filter:none}
+[data-t=dark] .ic,[data-t=dark] .nx{background:transparent;border:1px solid rgba(56,189,248,.4);box-shadow:none;color:#38bdf8}
+[data-t=dark] .big>h3 .ic{border:0}
+[data-t=dark] .sqb,[data-t=dark] .card,[data-t=dark] .qi,[data-t=dark] .chip,[data-t=dark] .tl,[data-t=dark] .mpill{background:transparent;box-shadow:none}
+[data-t=dark] .card:hover{box-shadow:none;border-color:rgba(56,189,248,.6)}
+[data-t=dark] .tl.on{background:rgba(56,189,248,.16);border-color:#38bdf8}
+[data-t=dark] .nv:hover,[data-t=dark] .ci:hover{background:rgba(56,189,248,.1)}
+[data-t=dark] .nv.on{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.55);box-shadow:none}
+[data-t=dark] .ci.on{background:rgba(56,189,248,.16)}
+[data-t=dark] .dot::after{border-color:#000}
+[data-t=dark] .send{box-shadow:none;border-color:transparent}
+[data-t=dark] .kbox{background:transparent}
+[data-t=dark] .md{background:rgba(0,0,0,.7);backdrop-filter:none;-webkit-backdrop-filter:none}
+[data-t=dark] .mb2,[data-t=dark] .mp{background:#000!important;border:1px solid rgba(255,255,255,.2)}
+[data-t=dark] .mb2 input[type=password]{background:#000;color:#fff;border:1px solid rgba(255,255,255,.25)}
+[data-t=dark] .btn.o{background:transparent;border:1px solid rgba(56,189,248,.45);color:#e8f6fd}
+[data-t=dark] .msg .bub,body.cbg[data-t=dark] .msg .bub{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;text-shadow:none;border-color:rgba(255,255,255,.16)}
+[data-t=dark] .u .bub{border-color:rgba(56,189,248,.6)}
+[data-t=dark] th{background:rgba(56,189,248,.16)}
+[data-t=dark] .tw{border-color:rgba(56,189,248,.45)}
+@media(max-width:820px){[data-t=dark] aside{background:#000!important;border-right:1px solid rgba(255,255,255,.16)}[data-t=dark] #scrim{background:rgba(0,0,0,.6)}}
+/* terminal: full black in dark mode - syntax colours unchanged */
+[data-t=dark] .term{background:#000;border:1px solid #2a2a2a;box-shadow:none}
+[data-t=dark] .th{background:#000;border-bottom:1px solid #2a2a2a}
+[data-t=dark] .th em{color:#9aa4ab}
+[data-t=dark] .th button{background:transparent;border:1px solid #2f3a40;color:#7dd3fc;box-shadow:none}
+[data-t=dark] .th button:hover{background:rgba(56,189,248,.14)}
+[data-t=dark] .th .dlb{background:linear-gradient(135deg,#7dd3fc,#0ea5e9);color:#00131c;border:0}
+[data-t=dark] .cb{background:#000}
+[data-t=dark] .term pre{background:#000;color:#d4d4d4}
+[data-t=dark] .cb .gut{background:#000;color:#59646b;border-right:1px solid #1f1f1f}
+/* only the colours that would be invisible on black are lifted (plain text, variables, 3rd-level brackets) */
+[data-t=dark] .tk-o{color:#d4d4d4}[data-t=dark] .tk-v{color:#9cdcfe}[data-t=dark] .tk-b2{color:#d19a66}
+/* ===== v5: Android fixes · sign-in · full-height chat · fixed terminal ===== */
+:root{--app-h:100%;--app-top:0px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+body{background-attachment:scroll!important}
+button,input,textarea{font-family:inherit}
+button{touch-action:manipulation;-webkit-appearance:none;appearance:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+/* admin-only controls stay hidden until the server confirms the e-mail is an admin */
+.adm{display:none!important}
+body.is-admin .adm{display:grid!important}
+body.is-admin button.nv.adm{display:flex!important}
+.own{display:none}body.is-owner .own{display:block}
+body:not(.in) #app{visibility:hidden}
+
+/* ---- chat uses the full height (desktop) ---- */
+#app{height:calc(var(--app-h) - 20px);margin:10px;padding:10px;gap:10px;border-radius:34px}
+main{padding:0 6px}
+.top{min-height:52px;padding:2px 0;gap:8px}
+.gh{width:44px;height:44px;border-radius:14px}.gh svg{width:24px;height:24px}
+.sq{width:44px;height:44px;border-radius:14px}.sq svg{width:23px;height:23px}
+#scroll{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;min-height:0}
+#msgs{padding:2px 0 6px}
+.msg{margin:8px 0}
+.bub{padding:12px 16px;font-size:16px;overflow-wrap:anywhere}
+.comp{margin:4px auto 2px;max-width:900px}
+.comp textarea{font-size:16px;height:auto;min-height:38px;max-height:140px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+.comp textarea::-webkit-scrollbar{display:none}
+.me>div{min-width:0}.me b,.me small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me .av{background-position:center}
+
+/* ---- code terminal: no scrollbars, never scrolls on its own, tiny fold button on the right ---- */
+.cb{max-height:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain}
+.cb::-webkit-scrollbar{display:none;width:0;height:0}
+.term.fold .cb{display:none}
+.th{align-items:center}
+.th .fb{width:24px;height:24px;padding:0;margin-left:2px;border-radius:7px;justify-content:center;flex-shrink:0}
+.th .fb svg{width:13px;height:13px;transition:transform .2s}
+.term.fold .fb svg{transform:rotate(-90deg)}
+
+/* ---- buttons in lists / panels ---- */
+#pb .btn{display:flex;width:100%;margin:0 0 8px;justify-content:flex-start;text-align:left}
+#pb p{margin-bottom:10px}
+.md{padding:12px}
+.mb2{max-height:calc(var(--app-h) - 24px);overscroll-behavior:contain}
+.fi{display:block;width:100%;padding:13px 14px;border-radius:14px;border:1px solid rgba(97,136,157,.45);background:rgba(255,255,255,.75);color:var(--tx);margin:6px 0 10px;outline:0;font-size:16px}
+.fi:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(56,189,248,.25)}
+[data-t=dark] .fi{background:#000;color:#fff;border-color:rgba(255,255,255,.28)}
+.arow{display:flex;gap:8px;align-items:center}.arow .fi{margin:0;flex:1;min-width:0}.arow .btn{margin:0;flex-shrink:0}
+.fl div{align-items:center;gap:10px}.fl div span{overflow:hidden;text-overflow:ellipsis;min-width:0}.fl a{cursor:pointer;padding:6px 8px;flex-shrink:0;color:var(--g2)}
+.fl{max-height:34vh;overflow:auto}
+
+/* ---- toast ---- */
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translate(-50%,10px);background:rgba(6,29,43,.94);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:120;max-width:88vw;text-align:center}
+#toast.s{opacity:1;transform:translate(-50%,0)}
+
+/* ---- sign-in screen ---- */
+#auth{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;background:rgba(226,238,245,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+body.in #auth{display:none}
+[data-t=dark] #auth{background:#000}
+.ac{width:100%;max-width:400px;padding:26px 22px 22px;border-radius:28px;text-align:center;margin:auto}
+.ac .alogo{width:84px;display:block;margin:0 auto 6px}
+.ac h2{font-size:26px;font-weight:600;letter-spacing:-.5px}
+.ac .asub{color:var(--mu);font-size:15px;margin:6px 0 18px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:50px;border-radius:14px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;font-size:16px;font-weight:500;box-shadow:0 2px 8px rgba(14,165,233,.12)}
+.gbtn svg{width:22px;height:22px;flex-shrink:0}
+.gbtn:disabled,.btn:disabled{opacity:.6}
+.or{display:flex;align-items:center;gap:12px;color:var(--mu);font-size:13px;margin:16px 0 6px}.or::before,.or::after{content:"";flex:1;height:1px;background:rgba(97,136,157,.35)}
+.tabs{display:flex;gap:6px;padding:4px;border-radius:14px;background:rgba(56,189,248,.12);margin:12px 0 10px}
+.tabs button{flex:1;min-height:40px;border-radius:11px;font-size:15px;color:var(--mu)}
+.tabs button.on{background:#fff;color:#0284c7;font-weight:600;box-shadow:0 2px 8px rgba(14,165,233,.18)}
+[data-t=dark] .tabs button.on{background:rgba(56,189,248,.2);color:#7dd3fc;box-shadow:none}
+#auth .fi{text-align:left;margin:0 0 10px}
+.aerr{min-height:20px;font-size:14px;color:#c0392b;margin:0 0 8px;text-align:left}.aerr.ok{color:#0a8a5a}
+[data-t=dark] .aerr{color:#ff8a80}[data-t=dark] .aerr.ok{color:#6ee7b7}
+.wide{width:100%;margin:0}
+.lnk{color:var(--g2);font-size:14px;padding:10px;margin-top:2px}
+.demo{font-size:13px;color:var(--mu);margin:14px 0 8px;line-height:1.5}
+.boot .afw{display:none}
+.spin{display:none;width:30px;height:30px;margin:14px auto 4px;border-radius:50%;border:3px solid rgba(56,189,248,.25);border-top-color:#38bdf8;animation:sp .8s linear infinite}
+.boot .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---- older browsers without backdrop-filter get a readable solid panel ---- */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+.gl{background:rgba(255,255,255,.82)}[data-t=dark] .gl{background:#000}
+}
+@media (prefers-reduced-motion:reduce){.comp::before{animation:none}*{transition-duration:.01ms!important}}
+
+/* ---- phones / Android ---- */
+@media(max-width:820px){
+/* the drawer must be position:fixed – the generic .gl rule (position:relative) used to win and left a 340px hole that squeezed the chat */
+aside.gl{position:fixed}
+#app{position:fixed;left:0;right:0;top:var(--app-top);height:var(--app-h);margin:0;padding:max(6px,env(safe-area-inset-top)) 8px max(6px,env(safe-area-inset-bottom));border-radius:0;gap:0}
+main{padding:0}
+.top{min-height:50px;gap:6px}
+.mbrand img{width:34px}.mbrand b{font-size:22px}.mbrand small{font-size:11px}
+.gl{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.comp{margin:2px 0 0;border-radius:22px;padding:8px 10px}
+.msg{margin:6px 0}.bub{padding:11px 13px;border-radius:20px}
+.hlogo{width:120px;margin-top:0}
+.mb2{padding:20px 18px}
+}
+@media(max-width:520px){
+.th{padding:7px 8px;gap:6px}
+.th em{margin:0 auto 0 4px}
+.th button span{display:none}
+.th button{padding:0;width:34px;height:30px;justify-content:center}
+.th .dlb{padding:0;width:34px}
+.th s{width:9px;height:9px}
+.cb .cd{padding:12px 14px}
+.cb .gut{padding:12px 8px 12px 10px}
+}
+
+/* ===== v6: slim layout – one small button opens the chat list; everything else lives in Settings ===== */
+aside#side.gl{position:fixed!important;left:0;top:0;bottom:0;width:min(86vw,340px);min-width:0;z-index:30;display:flex!important;flex-direction:column;border-radius:0 28px 28px 0;padding:max(18px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));background:rgba(244,251,255,.97);transform:translateX(-110%);visibility:hidden;transition:transform .28s,visibility 0s .28s}
+body.drawer aside#side.gl{transform:none;visibility:visible;transition:transform .28s,visibility 0s}
+[data-t=dark] aside#side.gl{background:#000!important;border-right:1px solid rgba(255,255,255,.16)}
+#scrim{display:none}
+body.drawer #scrim{display:block;position:fixed;inset:0;background:rgba(8,29,40,.35);z-index:25}
+[data-t=dark] body.drawer #scrim{background:rgba(0,0,0,.6)}
+#side .brand{margin:0 0 14px;padding:0 2px;flex-shrink:0}
+#side .brand img{width:48px}
+#side .brand b{font-size:28px}
+#side .brand small{font-size:13px;margin-top:4px}
+#side .brand .sqb{width:40px;height:40px;border-radius:13px}
+#side #q{display:block;margin:0 0 4px;flex-shrink:0;font-size:15px;min-height:42px}
+#side .rc{margin-top:10px;padding:12px 6px 8px;font-size:14px;cursor:default;text-transform:uppercase;letter-spacing:.8px;flex-shrink:0}
+#side .rc small{font-size:13px;letter-spacing:0}
+#side #list{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:rgba(56,189,248,.5) transparent;display:block!important}
+#side #list::-webkit-scrollbar{width:6px}
+#side #list::-webkit-scrollbar-thumb{background:rgba(56,189,248,.45);border-radius:6px}
+#side .ci{min-height:46px}
+#side .empty{color:var(--mu);font-size:14px;text-align:center;padding:26px 10px;line-height:1.5}
+.sfoot{display:flex;align-items:center;gap:12px;width:100%;padding:14px 12px;margin-top:8px;border-top:1px solid rgba(97,136,157,.28);border-radius:14px;font-size:16px;text-align:left;flex-shrink:0}
+.sfoot:hover{background:rgba(56,189,248,.12)}
+.sfoot svg:last-child{margin-left:auto;color:var(--mu)}
+.sfoot span{flex:1}
+/* top bar: just one small button + the brand */
+.gh.sbt{display:grid!important;width:40px;height:40px;border-radius:13px;background:var(--gl2);border:1px solid var(--bd);box-shadow:var(--sh);flex-shrink:0}
+.gh.sbt svg{width:21px;height:21px}
+.mbrand{display:flex!important}
+@media(min-width:821px){.mbrand img{width:38px}.mbrand b{font-size:24px}.mbrand small{font-size:12px}}
+.rcp:empty{display:none!important}
+/* settings panel */
+.pcard{display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:18px;border:1px solid var(--bd);margin-bottom:14px;background:rgba(56,189,248,.08)}
+.pcard>div:last-child{min-width:0}.pcard b{display:block;font-weight:600;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pcard small{display:block;color:var(--mu);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pb .btn{gap:12px;align-items:center}
+#pb .btn svg{width:20px;height:20px}
+#pb .btn.dng{color:#c0392b;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.4)}
+[data-t=dark] #pb .btn.dng{color:#ff8a80;background:transparent;border-color:rgba(255,138,128,.5)}
+#pb .sep2{height:1px;background:rgba(97,136,157,.3);margin:6px 0 12px}
+
+/* Urdu responses: Noto Nastaliq Urdu with correct RTL flow. */
+.msg.a .bub.urdu-response {
+  font-family: "Noto Nastaliq Urdu", serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.25;
+  overflow-wrap: anywhere;
+  unicode-bidi: plaintext;
+}
+.msg.a .bub.urdu-response h1,
+.msg.a .bub.urdu-response h2,
+.msg.a .bub.urdu-response h3,
+.msg.a .bub.urdu-response p,
+.msg.a .bub.urdu-response li,
+.msg.a .bub.urdu-response blockquote,
+.msg.a .bub.urdu-response th,
+.msg.a .bub.urdu-response td {
+  font-family: "Noto Nastaliq Urdu", serif;
+  line-height: 2.25;
+}
+.msg.a .bub.urdu-response pre,
+.msg.a .bub.urdu-response code,
+.msg.a .bub.urdu-response .term,
+.msg.a .bub.urdu-response .term * {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important;
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+  line-height: 1.55;
+}
+.msg.a .bub.urdu-response .term { direction: ltr; }
+
+</style>
+<style id="showme-dark-terminal-contrast">
+/* Improve terminal/code readability in dark mode without changing light mode. */
+html[data-theme="dark"] pre, html[data-theme="dark"] code,
+body.dark pre, body.dark code, .dark-mode pre, .dark-mode code,
+[data-bs-theme="dark"] pre, [data-bs-theme="dark"] code {
+  color: #F8FAFC !important;
+  text-shadow: none !important;
+  -webkit-font-smoothing: antialiased;
+}
+html[data-theme="dark"] pre, body.dark pre, .dark-mode pre, [data-bs-theme="dark"] pre,
+html[data-theme="dark"] .terminal, body.dark .terminal, .dark-mode .terminal, [data-bs-theme="dark"] .terminal,
+html[data-theme="dark"] .xterm, body.dark .xterm, .dark-mode .xterm, [data-bs-theme="dark"] .xterm {
+  background: #0B1120 !important;
+  color: #F8FAFC !important;
+  border-color: #374151 !important;
+  line-height: 1.7;
+}
+/* Common syntax highlighters (Highlight.js, Prism, and generic tokens). */
+.dark-mode .hljs-keyword, .dark-mode .token.keyword,
+html[data-theme="dark"] .hljs-keyword, [data-bs-theme="dark"] .hljs-keyword,
+html[data-theme="dark"] .token.keyword, [data-bs-theme="dark"] .token.keyword { color: #D8B4FE !important; font-weight: 700; }
+.dark-mode .hljs-string, .dark-mode .token.string,
+html[data-theme="dark"] .hljs-string, [data-bs-theme="dark"] .hljs-string,
+html[data-theme="dark"] .token.string, [data-bs-theme="dark"] .token.string { color: #4ADE80 !important; }
+.dark-mode .hljs-title, .dark-mode .token.function,
+html[data-theme="dark"] .hljs-title, [data-bs-theme="dark"] .hljs-title,
+html[data-theme="dark"] .token.function, [data-bs-theme="dark"] .token.function { color: #FACC15 !important; font-weight: 600; }
+.dark-mode .hljs-number, .dark-mode .token.number,
+html[data-theme="dark"] .hljs-number, [data-bs-theme="dark"] .hljs-number,
+html[data-theme="dark"] .token.number, [data-bs-theme="dark"] .token.number { color: #60A5FA !important; }
+.dark-mode .hljs-comment, .dark-mode .token.comment,
+html[data-theme="dark"] .hljs-comment, [data-bs-theme="dark"] .hljs-comment,
+html[data-theme="dark"] .token.comment, [data-bs-theme="dark"] .token.comment { color: #A1A1AA !important; font-style: italic; }
+.dark-mode .hljs-variable, .dark-mode .token.variable,
+html[data-theme="dark"] .hljs-variable, [data-bs-theme="dark"] .hljs-variable,
+html[data-theme="dark"] .token.variable, [data-bs-theme="dark"] .token.variable { color: #F9A8D4 !important; }
+.dark-mode .hljs-type, .dark-mode .token.class-name,
+html[data-theme="dark"] .hljs-type, [data-bs-theme="dark"] .hljs-type,
+html[data-theme="dark"] .token.class-name, [data-bs-theme="dark"] .token.class-name { color: #22D3EE !important; }
+.dark-mode .line-number, .dark-mode .line-numbers,
+html[data-theme="dark"] .line-number, [data-bs-theme="dark"] .line-number,
+html[data-theme="dark"] .line-numbers, [data-bs-theme="dark"] .line-numbers { color: #9CA3AF !important; }
+</style>
+</head><body data-t="light">
+<div id="app"><div id="scrim" onclick="hideSide()"></div>
+<aside class="gl" id="side"><div class="brand"><img class="lg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2338bdf8'/%3E%3Ctext x='50' y='70' font-size='56' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E"><div><b>ShowMe</b><small>Ask &nbsp;·&nbsp; Learn &nbsp;·&nbsp; Create</small></div><button class="sqb" onclick="newChat()" title="New chat" aria-label="New chat"><i data-i="plus2"></i></button></div>
+<input id="q" placeholder="Search chats…" oninput="renderList()" autocomplete="off">
+<div class="rc"><span>All chats</span><small id="cc"></small></div><div id="list"></div>
+<button class="sfoot" onclick="panel('set')"><i data-i="sliders"></i><span>Settings</span><i data-i="chev"></i></button></aside>
+<main>
+<div class="top"><button class="gh sbt" onclick="showSide()" title="Chats" aria-label="Open chats" aria-haspopup="true"><i data-i="gear"></i></button><div class="mbrand"><img class="lg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2338bdf8'/%3E%3Ctext x='50' y='70' font-size='56' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E"><div><b>Show Me</b><small>Ask  ·  Learn  ·  Create</small></div></div><div class="sp"></div>
+</div>
+<div id="scroll"><div id="home" class="home"><img class="lg hlogo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2338bdf8'/%3E%3Ctext x='50' y='70' font-size='56' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E"><h1 class="dq">ShowMe</h1><h1 class="mq">Hello, I'm <em>ShowMe</em></h1>
+<p class="tag"><span class="dq">Your AI Companion for a Smarter Tomorrow</span><span class="mq">Your AI companion for a smarter tomorrow</span></p>
+<div class="chips dq"><span class="chip"><span class="ic"><i data-i="bulb"></i></span>Think Deeper</span><span class="chip"><span class="ic"><i data-i="zap"></i></span>Solve Faster</span><span class="chip"><span class="ic"><i data-i="spark"></i></span>Create Better</span></div>
+<div class="quick gl mq"><div class="qi"><div class="ic"><i data-i="bulb"></i></div>Think<br>Deeper</div><div class="qi"><div class="ic"><i data-i="zap"></i></div>Solve<br>Faster</div><div class="qi"><div class="ic"><i data-i="spark"></i></div>Create<br>Better</div><div class="nx"><i data-i="chev"></i></div></div>
+<div class="big gl glow dq"><h3><span class="ic"><i data-i="spark"></i></span>What would you like to do today?</h3><div class="cards">
+<div class="card" onclick="ask('Explain how neural networks work in simple words')"><div class="ic"><i data-i="bulb"></i></div><div><b>Get an explanation</b><small>Break down complex topics in simple words.</small></div><i data-i="arrow"></i></div>
+<div class="card" onclick="ask('Write a Python script that renames files in a folder')"><div class="ic"><i data-i="code"></i></div><div><b>Write code</b><small>Generate, debug, and improve code in any language.</small></div><i data-i="arrow"></i></div>
+<div class="card" onclick="ask('Create a personalized study roadmap for learning cybersecurity')"><div class="ic"><i data-i="book"></i></div><div><b>Learn something new</b><small>Get personalized learning plans and resources.</small></div><i data-i="arrow"></i></div>
+<div class="card" onclick="pick('fAny')"><div class="ic"><i data-i="file"></i></div><div><b>Analyze files</b><small>Upload files and get summaries, insights, or answers.</small></div><i data-i="arrow"></i></div></div></div>
+<div class="rcp gl glow" id="rcp"></div></div>
+<div id="msgs"></div></div>
+<div class="comp gl glow"><div class="attbar" id="attbar"></div><textarea id="in" rows="1" placeholder="Message ShowMe…" autocomplete="off" autocapitalize="sentences" aria-label="Message"></textarea>
+<div class="crow"><button class="tl" id="tw" onclick="web^=1;this.classList.toggle('on',web)"><i data-i="globe"></i>Web Search</button><button class="tl" id="tt" onclick="think^=1;this.classList.toggle('on',think)"><i data-i="brain"></i>Think</button><span class="sp"></span>
+<button class="mpill" id="mpill" onclick="event.stopPropagation();$('mp').classList.toggle('s')"><span id="mlab"></span><i data-i="chevd"></i></button>
+<div class="mp gl" id="mp"><button data-m="glm-4.5-flash" onclick="setModel(this.dataset.m)"><div><b>ShowMe Beta</b><small>Fast, everyday answers</small></div><i data-i="check"></i></button><button data-m="glm-4.6v-flash" onclick="setModel(this.dataset.m)"><div><b>ShowMe Research</b><small>Vision &amp; deep research</small></div><i data-i="check"></i></button></div>
+<button class="send" onclick="send()" onpointerdown="event.preventDefault()" aria-label="Send"><i data-i="send"></i></button></div></div>
+
+</main></div>
+<input type="file" id="fAny" hidden accept="image/*,.txt,.md,.json,.csv,.js,.py,.html,.css,.c,.cpp,.java,.xml,.yml,.sql,.log" onchange="attach(this)"><input type="file" id="fImg" hidden accept="image/*" onchange="attach(this)"><input type="file" id="fDoc" hidden accept=".txt,.md,.json,.csv,.js,.py,.html,.css,.c,.cpp,.java,.xml,.yml,.sql,.log" onchange="attach(this)">
+<div class="md" id="admin"><div class="mb2 gl"><h2>Admin</h2>
+<div class="kbox own"><h3>Admins <small>owner only</small></h3><p>Add an e-mail to give that person the Admin and Library buttons. They must sign in with that same address.</p>
+<div class="arow"><input class="fi" id="aemail" type="email" inputmode="email" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="name@example.com"><button class="btn" onclick="addAdmin()">Add</button></div>
+<div class="fl" id="alist"></div></div>
+<div class="kbox"><h3>Zhipu AI <small id="zst"></small></h3><p>Used by ShowMe Beta. Format: id.secret</p><input type="password" class="fi" id="key" placeholder="Zhipu API key" autocomplete="off"><button class="btn" onclick="integrateKey()">Save &amp; Integrate</button><button class="btn o" onclick="testConnection()">Test</button></div>
+<div class="kbox"><h3>Groq <small id="gst"></small></h3><p>Used by ShowMe Research. Key starts with gsk_</p><input type="password" class="fi" id="gkey" placeholder="Groq API key (gsk_…)" autocomplete="off"><button class="btn" onclick="integrateGroq()">Save &amp; Integrate</button><button class="btn o" onclick="testGroq()">Test</button></div>
+<div class="kbox"><h3>Knowledge Data</h3><p>Import .json / .txt / .csv files. With Think mode on, ShowMe reads this data first and answers from it.</p><button class="btn" onclick="dfile.click()">Import file</button><div class="fl" id="dl"></div></div>
+<button class="btn o" onclick="close_()">Close</button></div></div>
+<div class="md" id="pn"><div class="mb2 gl"><h2 id="pt"></h2><div id="pb"></div><button class="btn o" onclick="close_()" style="margin-top:12px">Close</button></div></div>
+<div class="md" id="th"><div class="mb2 gl"><h2>Theme</h2><p>Pick a look, or add your own background picture.</p><button class="btn" onclick="setTheme('light')">Light</button><button class="btn o" onclick="setTheme('dark')">Dark</button>
+<h2 style="margin-top:16px">Custom background</h2><p>Message bubbles are fully transparent. With your own image they get a slight blur so text stays readable.</p><button class="btn" onclick="$('fBg').click()">Choose image</button><button class="btn o" onclick="clearBg()">Remove</button><button class="btn o" onclick="close_()">Close</button></div></div>
+<div id="auth" class="boot"><div class="ac gl">
+<img class="lg alogo" id="alogo" alt="ShowMe" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+<div class="spin"></div>
+<div class="afw">
+<h2>Welcome to ShowMe</h2><p class="asub">Sign in to start chatting with the AI.</p>
+<form id="aform" onsubmit="emailGo();return false" novalidate>
+<button type="button" class="gbtn" id="gbtn" onclick="googleIn()"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Continue with Google</span></button>
+<div class="or"><span>or use e-mail</span></div>
+<div class="tabs"><button type="button" id="tin" class="on" onclick="aMode('in')">Sign in</button><button type="button" id="tup" onclick="aMode('up')">Create account</button></div>
+<input class="fi" id="aem" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="E-mail">
+<input class="fi" id="apw" type="password" autocomplete="current-password" placeholder="Password">
+<div class="aerr" id="aerr" role="alert"></div>
+<button type="submit" class="btn wide" id="asub">Sign in</button>
+<button type="button" class="lnk" id="afg" onclick="forgot()">Forgot password?</button>
+</form>
+<form id="arst" style="display:none" onsubmit="setNewPw();return false">
+<h2 style="font-size:20px;margin-bottom:10px">Set a new password</h2>
+<input class="fi" id="npw" type="password" autocomplete="new-password" placeholder="New password (6+ characters)">
+<button type="submit" class="btn wide">Save password</button>
+</form>
+
+</div></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="fBg" hidden accept="image/*" onchange="setBg(this)">
+<input type="file" id="dfile" hidden multiple accept=".json,.txt,.csv,.md" onchange="importData(this)">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+// Android wrapper support: API calls go to the deployed ShowMe backend when configured.
+const SHOWME_API_BASE = (window.AndroidBridge && typeof window.AndroidBridge.getApiBaseUrl === 'function') ? String(window.AndroidBridge.getApiBaseUrl() || '').replace(/\/$/, '') : '';
+if (SHOWME_API_BASE) {
+  const _showmeFetch = window.fetch.bind(window);
+  window.fetch = (input, init) => {
+    if (typeof input === 'string' && input.startsWith('/api/')) input = SHOWME_API_BASE + input;
+    else if (input instanceof Request && input.url.startsWith(location.origin + '/api/')) input = new Request(SHOWME_API_BASE + input.url.slice(location.origin.length), input);
+    return _showmeFetch(input, init);
+  };
+}
+
+const P={sliders:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',trash:'<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>',copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',dl:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',menu:'<path d="M4 7h16M4 12h16M4 17h10"/>',plus:'<circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>',plus2:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>',folder:'<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',compass:'<circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',chat:'<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',userF:'<circle cx="12" cy="8" r="4.2" fill="currentColor"/><path d="M4 21a8 8 0 0 1 16 0z" fill="currentColor"/>',sun:'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>',homeF:'<path fill="currentColor" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path stroke="#fff" d="M9.5 21.5V13h5v8.5"/>',arrow:'<path d="M5 12h14M12 5l7 7-7 7"/>',chev:'<path d="M9 18l6-6-6-6"/>',chevd:'<path d="M6 9l6 6 6-6"/>',check:'<path d="M20 6L9 17l-5-5"/>',up:'<path d="M18 15l-6-6-6 6"/>',send:'<path d="M12 19V5M5 12l7-7 7 7"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>',zap:'<path d="M13 2L3 14h9l-1 8 10-12h-9z"/>',spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v3M3.5 18.5h3"/>',code:'<path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>',book:'<path d="M2 4h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',brain:'<path d="M9.5 3A3.5 3.5 0 0 0 6 6.5a3 3 0 0 0-2 5 3 3 0 0 0 2 5A3.5 3.5 0 0 0 9.5 21 2.5 2.5 0 0 0 12 18.5v-13A2.5 2.5 0 0 0 9.5 3zM14.5 3A3.5 3.5 0 0 1 18 6.5a3 3 0 0 1 2 5 3 3 0 0 1-2 5 3.5 3.5 0 0 1-3.5 4.5 2.5 2.5 0 0 1-2.5-2.5"/>',shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',more:'<circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/>',clip:'<path d="M21.4 11.1l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/>',globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',image:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 16l3-3 2 2 3-4M15 9h.01"/>'};
+const I=n=>`<svg class="i" viewBox="0 0 24 24">${P[n]}</svg>`,icons=()=>document.querySelectorAll('i[data-i]').forEach(e=>e.outerHTML=I(e.dataset.i));icons();
+const $=id=>document.getElementById(id),E=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const mem={},LS={get(k){try{return localStorage.getItem(k)}catch(e){return k in mem?mem[k]:null}},set(k,v){try{localStorage.setItem(k,v);return 1}catch(e){mem[k]=v;return /quota/i.test((e&&e.name)||'')?0:1}},del(k){try{localStorage.removeItem(k)}catch(e){}delete mem[k]}};
+const SM=window.SM||{demo:false};
+const blank=()=>({chats:[],cur:null,model:'glm-4.5-flash'});
+let KEY='sm4_guest',S=blank(),think=0,web=0,busy=0,att=null,ME={email:'',name:'',avatar:'',isAdmin:false,isOwner:false},sb=null,curUid=null,RECOVERY=0,AD={admins:[],knowledge:[],keySet:false,owner:''};
+function loadState(uid){KEY='sm4_'+uid;try{S=Object.assign(blank(),JSON.parse(LS.get(KEY)||'{}'))}catch(e){S=blank()}if(!Array.isArray(S.chats))S.chats=[]}
+const save=()=>{if((KEY!='sm4_guest'||!!window.AndroidBridge)&&!LS.set(KEY,JSON.stringify(S)))toast('Storage is full – delete some old chats.')};
+function applyTheme(t){t=t=='dark'?'dark':'light';document.body.dataset.t=t;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=t=='dark'?'#000000':'#e9f0f4'}
+applyTheme(LS.get('sm_theme')||'light');
+let _tt;function toast(t){const e=$('toast');e.textContent=t;e.classList.add('s');clearTimeout(_tt);_tt=setTimeout(()=>e.classList.remove('s'),2600)}
+const EA=s=>E(String(s)).replace(/"/g,'&quot;');
+const NAME={'glm-4.5-flash':'ShowMe Beta','glm-4.6v-flash':'ShowMe Research'},SH={'glm-4.5-flash':'Beta','glm-4.6v-flash':'Research'};
+function setModel(m){S.model=m;document.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',b.dataset.m==m));$('mlab').innerHTML='<span class="dq">ShowMe </span>'+SH[m];$('mp').classList.remove('s');save()}setModel(NAME[S.model]?S.model:'glm-4.5-flash');
+document.addEventListener('click',e=>{if(!e.target.closest('#mp'))$('mp').classList.remove('s')});
+const KC=new Set('if else elif for while do switch case break continue return try catch finally throw throws yield await import from export default raise with match goto in except assert pass then fi done esac'.split(' '));
+const KB=new Set('var let const function class def int char float double void long short unsigned signed struct enum union typedef static public private protected new this self interface extends implements package namespace using true false null None True False nil undefined fn pub impl mut lambda is not and or delete typeof instanceof bool auto extern inline sizeof template typename virtual override final abstract readonly async super func'.split(' '));
+const KT=new Set('string number boolean any object Array Map Set Promise Date Math JSON console String Number Boolean Object Error str list dict tuple size_t vector'.split(' '));
+const tk=(c,t)=>`<span class="tk-${c}">${E(t)}</span>`;
+function hl(src,lang){lang=(lang||'').toLowerCase();
+if(/^(html|xml|svg|vue|xhtml)$/.test(lang))return hlMk(src);
+if(/^(css|scss|less)$/.test(lang))return hlCss(src);
+const hashL=/^(py|python|sh|bash|shell|zsh|yaml|yml|rb|ruby|toml|ini|r|perl|pl|powershell|ps1|dockerfile|makefile|conf)$/.test(lang)||(!lang&&/^\s*(def |from \w+ import|import \w+\s*$|print\()/m.test(src)&&!/[{};]\s*$/m.test(src));
+const sql=lang=='sql',cm=hashL?String.raw`#[^\n]*`:sql?String.raw`--[^\n]*|\/\*[\s\S]*?\*\/`:String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`;
+const pp=(hashL||sql)?'(?!)':String.raw`^[ \t]*#[ \t]*(?:include|define|ifdef|ifndef|endif|if|else|elif|undef|pragma|error)\b[^\n]*`;
+const re=new RegExp('('+pp+')|('+cm+')|('+String.raw`"""[\s\S]*?"""|'''[\s\S]*?'''|[\x60](?:\\[\s\S]|[^\x60\\])*[\x60]|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'`+')|('+String.raw`\b0x[\da-fA-F]+\b|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b`+')|('+String.raw`[A-Za-z_$][\w$]*`+')|('+String.raw`[()\[\]{}]`+')|('+String.raw`[\s\S]`+')','gm');
+let out='',d=0,prev='',m;
+while((m=re.exec(src))){const t=m[0];
+if(m[1]){const x=t.match(/^(\s*#\s*\w+)(\s*<[^>\n]*>|\s*"[^"\n]*")?([^\n]*)/);out+=tk('kc',x[1])+(x[2]?tk('s',x[2]):'')+E(x[3]);prev=''}
+else if(m[2]){out+=tk('c',t);prev=''}
+else if(m[3]){out+=tk(lang=='json'&&/^\s*:/.test(src.slice(re.lastIndex,re.lastIndex+6))?'key':'s',t);prev=''}
+else if(m[4]){out+=tk('n',t);prev=''}
+else if(m[5]){let c='v';
+if(KC.has(t))c='kc';else if(KB.has(t))c='kb';else if(/^(def|function|fn|func)$/.test(prev))c='f';
+else if(/^(class|struct|interface|enum|new|extends|implements|trait|namespace)$/.test(prev)||KT.has(t)||/^[A-Z][a-z]/.test(t))c='t';
+else if(src[re.lastIndex]=='(')c='f';
+out+=tk(c,t);prev=t}
+else if(m[6]){if('([{'.includes(t)){out+=tk('b'+(d%3),t);d++}else{d=Math.max(0,d-1);out+=tk('b'+(d%3),t)}prev=''}
+else{out+=E(t);if(!/^\s$/.test(t))prev=''}}
+return out}
+function hlMk(s){return E(s).replace(/(&lt;!--[\s\S]*?--&gt;)|(&lt;\/?)([\w:-]+)([\s\S]*?)(\/?&gt;)/g,(m,c,o,tag,at,e)=>c?`<span class="tk-c">${c}</span>`:`<span class="tk-o">${o}</span><span class="tk-p">${tag}</span>`+at.replace(/([\w:@.-]+)(?:(=)("[^"]*"|'[^']*'))?/g,(x,n,eq,v)=>`<span class="tk-at">${n}</span>`+(eq?eq+`<span class="tk-sv">${v}</span>`:''))+`<span class="tk-o">${e}</span>`)}
+function hlCss(s){return E(s).replace(/(\/\*[\s\S]*?\*\/)|([^{}\/;]+)(\{)|([\w-]+)(\s*:\s*)([^;{}]*)(;?)/g,(m,c,sel,b,p,col,v,sc)=>c?`<span class="tk-c">${c}</span>`:sel!=null?`<span class="${/^\s*@/.test(sel)?'tk-kc':'tk-p'}">${sel}</span>${b}`:`<span class="tk-at">${p}</span>${col}`+v.replace(/(#[\da-fA-F]{3,8}\b|-?\d*\.?\d+(?:px|em|rem|%|vh|vw|s|ms|deg|fr)?\b)|("[^"]*"|'[^']*')|([\w-]+)(?=\()|([A-Za-z-]+)/g,(x,n,st,fn,w)=>n?`<span class="tk-n">${n}</span>`:st?`<span class="tk-s">${st}</span>`:fn?`<span class="tk-f">${fn}</span>`:`<span class="tk-sv">${w}</span>`)+sc)}
+const EXT={html:'html',css:'css',javascript:'js',js:'js',python:'py',py:'py',c:'c',cpp:'cpp','c++':'cpp',java:'java',json:'json',bash:'sh',sh:'sh',php:'php',typescript:'ts',ts:'ts',sql:'sql',go:'go',rust:'rs',csharp:'cs',cs:'cs',kotlin:'kt',swift:'swift',xml:'xml',yaml:'yml',markdown:'md',ruby:'rb'};
+const cur=()=>S.chats.find(c=>c.id==S.cur);
+function newChat(){S.cur=null;render();renderList();save();close_()}
+function ask(t){close_();$('in').value=t;send()}
+function openChat(id){S.cur=id;render();renderList();close_()}
+function searchOn(){if(!document.body.classList.contains('drawer'))showSide();setTimeout(()=>$('q').focus(),300)}
+function togList(){const l=$('list');l.style.display=l.style.display=='none'?'block':'none'}
+let ovs=0;
+function ovPush(){if(!ovs){ovs=1;try{history.pushState({sm:1},'')}catch(e){ovs=0}}}
+function ovPop(){if(ovs){ovs=0;try{history.back()}catch(e){}}}
+function closeAll(){document.querySelectorAll('.md').forEach(m=>m.classList.remove('s'));document.body.classList.remove('drawer');$('mp').classList.remove('s')}
+addEventListener('popstate',()=>{ovs=0;closeAll()});
+function open_(i){if(i=='admin'&&!ME.isAdmin)return;document.querySelectorAll('.md').forEach(m=>m.classList.remove('s'));document.body.classList.remove('drawer');$(i).classList.add('s');ovPush();if(i=='admin')adminLoad()}
+function close_(){closeAll();ovPop()}
+const mob=()=>innerWidth<=820;
+function hideSide(){close_()}
+function showSide(){if(document.body.classList.contains('drawer'))return close_();ovPush();document.body.classList.add('drawer');renderList()}
+async function token(){const r=await sb.auth.getSession();return r&&r.data&&r.data.session?r.data.session.access_token:''}
+function sessionLost(){try{sb.auth.signOut()}catch(e){}}
+async function post(path,body){const tk=await token();const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+tk},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(r.status==401)sessionLost();if(!r.ok)throw new Error(j.error||('HTTP '+r.status));return j}
+async function adm(action,p){return post('/api/admin',Object.assign({action},p||{}))}
+async function adminLoad(){try{AD=await adm('overview');$('zst').textContent=AD.keySet?'● connected':'○ not set';$('gst').textContent=AD.groqKeySet?'● connected':'○ not set';renderAdmins();renderData()}catch(e){toast(e.message)}}
+function renderAdmins(){$('alist').innerHTML='<div><span>'+E(AD.owner||'')+' <small>(owner)</small></span></div>'+AD.admins.map(a=>`<div><span>${E(a.email)}</span><a data-e="${EA(a.email)}" onclick="rmAdmin(this.dataset.e)">Remove</a></div>`).join('')}
+async function addAdmin(){const el=$('aemail'),e=el.value.trim();if(!e)return;try{await adm('addAdmin',{email:e});el.value='';await adminLoad();toast('Admin added')}catch(err){toast(err.message)}}
+async function rmAdmin(e){if(!confirm('Remove admin access for '+e+'?'))return;try{await adm('removeAdmin',{email:e});await adminLoad();toast('Admin removed')}catch(err){toast(err.message)}}
+async function integrateKey(){const el=$('key'),k=el.value.trim();if(!k)return toast('Paste your Zhipu API key first.');try{const j=await adm('setKey',{apiKey:k});el.value='';await adminLoad();toast(j.message||'AI key saved ✔')}catch(e){toast('Could not save key: '+e.message)}}
+async function integrateGroq(){const el=$('gkey'),k=el.value.trim();if(!k)return toast('Paste your Groq API key first.');try{const j=await adm('setGroqKey',{apiKey:k});el.value='';await adminLoad();toast(j.message||'Groq key saved ✔')}catch(e){toast('Could not save key: '+e.message)}}
+async function testGroq(){toast('Testing…');try{const j=await adm('testGroq');alert(j.message||'Done')}catch(e){alert('Test failed: '+e.message)}}
+async function testConnection(){toast('Testing…');try{const j=await adm('testKey');alert(j.message||'Done')}catch(e){alert('Test failed: '+e.message)}}
+function setTheme(t){applyTheme(t);LS.set('sm_theme',t)}
+function applyBg(u){const b=document.body;if(u){b.style.backgroundImage='url("'+u+'")';b.classList.add('cbg')}else{b.style.backgroundImage='';b.classList.remove('cbg')}}
+function setBg(el){const f=el.files[0];el.value='';if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const u=c.toDataURL('image/jpeg',.82);try{localStorage.smbg=u}catch(e){return alert('That image is too large to store in the browser. Try a smaller one.')}applyBg(u)};im.src=r.result};r.readAsDataURL(f)}
+function clearBg(){try{localStorage.removeItem('smbg')}catch(e){}applyBg('')}
+try{applyBg(localStorage.smbg||'')}catch(e){}
+const readText=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>no(new Error('Could not read file'));r.readAsText(f)});
+function importData(el){const fs=[...el.files];el.value='';(async()=>{for(const f of fs){try{await adm('addKnowledge',{name:f.name,text:(await readText(f)).slice(0,400000)})}catch(e){toast(f.name+': '+e.message)}}await adminLoad()})()}
+function renderData(){$('dl').innerHTML=AD.knowledge.map(d=>`<div><span>${E(d.name)}</span><a data-id="${+d.id}" onclick="delData(+this.dataset.id)">✕</a></div>`).join('')||'No files imported.'}
+async function delData(id){try{await adm('deleteKnowledge',{id});await adminLoad()}catch(e){toast(e.message)}}
+let SETX='';
+function panel(k){const p=$('pb');if(k=='lib'&&!ME.isAdmin)return;$('pt').textContent={lib:'Library',exp:'Explore',set:'Settings',hist:'Chat History'}[k];
+const back=k=='set'?'':'<button class="btn o" onclick="panel(\'set\')">← Settings</button><div class="sep2"></div>';
+if(k=='lib'){p.innerHTML=back+'<div class="fl" id="lbl">Loading…</div>';adm('overview').then(o=>{$('lbl').innerHTML=o.knowledge.map(d=>`<div><span>${E(d.name)}</span></div>`).join('')||'No files. Settings → Admin → Import file.'}).catch(e=>{$('lbl').textContent=e.message})}
+if(k=='exp')p.innerHTML=back+['Compare Cat vs Dog','Write an essay about technology','Write a C program for factorial','Properties of cow','Explain blockchain'].map(t=>`<button class="btn o" onclick="ask('${t}')">${t}</button>`).join('');
+if(k=='hist')p.innerHTML=back+(S.chats.map(c=>`<button class="btn o" onclick="openChat(${c.id})">${I('chat')}<span>${E(c.title)}</span></button>`).join('')||'<p>No chats yet.</p>');
+if(k=='set'){const nm=ME.name||(ME.email||'').split('@')[0]||'Guest';
+p.innerHTML=`<div class="pcard"><div class="av" id="av"></div><div><b>${E(nm)}</b><small>${E(ME.email||'')}</small></div></div>`
++`<button class="btn o" onclick="panel('hist')">${I('clock')}Chat History</button>`
++(ME.isAdmin?`<button class="btn o" onclick="panel('lib')">${I('folder')}Library</button><button class="btn o" onclick="open_('admin')">${I('shield')}Admin</button>`:'')
++`<button class="btn o" onclick="panel('exp')">${I('compass')}Explore</button><button class="btn o" onclick="open_('th')">${I('sun')}Theme &amp; background</button><button class="btn o" onclick="clearChats()">${I('trash')}Clear all chats</button>${SETX}<div class="sep2"></div><button class="btn o" onclick="signOut()">${I('logout')}Sign out</button><button class="btn o dng" onclick="removeProfile()">${I('trash')}Remove profile</button>`;
+const av=$('av');av.style.backgroundImage=/^https:\/\//.test(ME.avatar||'')?'url("'+ME.avatar.replace(/"/g,'%22')+'")':'';av.style.backgroundSize='cover';av.style.backgroundPosition='center'}
+open_('pn')}
+function clearChats(){if(confirm('Delete all chats?')){S.chats=[];S.cur=null;save();render();renderList();close_()}}
+function removeProfile(){if(!confirm('Remove your profile from this device?\n\nThis deletes your saved chats, theme and background here and signs you out.'))return;
+const k=KEY;LS.del(k);LS.del('sm_theme');LS.del('smbg');if(SM.demo)LS.del('sm_demo');applyBg('');applyTheme('light');S=blank();signOut();toast('Profile removed from this device')}
+function ago(t){const m=Math.floor((Date.now()-t)/6e4);return m<1?'now':m<60?m+'m ago':m<1440?Math.floor(m/60)+'h ago':Math.floor(m/1440)+'d ago'}
+const snip=c=>{const a=[...c.msgs].reverse().find(m=>m.role=='assistant'&&m.content);return a?a.content.replace(/[`#*|>-]/g,'').slice(0,60)+'…':''};
+function items(){const f=$('q').value.toLowerCase();return S.chats.filter(c=>c.title.toLowerCase().includes(f)).map(c=>({t:c.title,s:snip(c),a:ago(c.id),on:c.id==S.cur,c:`openChat(${c.id})`}))}
+function renderList(){const it=items(),f=$('q').value.trim();
+$('list').innerHTML=it.length?it.map(x=>`<div class="ci ${x.on?'on':''}" onclick="${x.c}">${I('chat')}<span>${E(x.t)}</span><small>${x.a}</small></div>`).join(''):`<div class="empty">${f?'No chats match your search.':'No chats yet.<br>Tap + to start one.'}</div>`;
+$('cc').textContent=S.chats.length||'';
+$('rcp').innerHTML=S.chats.length?`<div class="rh">${I('clock')}Recent Chats</div>`+it.slice(0,5).map(x=>`<div class="ri" onclick="${x.c}"><div class="ic">${I('chat')}</div><div class="t"><b>${E(x.t)}</b><small>${E(x.s)}</small></div><em>${x.a}</em></div>`).join(''):''}
+function inline(s){return E(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code class="i">$1</code>')}
+function fixCode(c,lang){if(!/^(|c|cpp|c\+\+|java|cs|csharp|js|javascript|ts|typescript|php|go|rust|rs|kotlin|swift)$/i.test(lang||''))return c;const L=c.split('\n');
+if(L.length>3||Math.max(...L.map(x=>x.length))<100||(c.match(/;/g)||[]).length<3)return c;
+let o='',ind=0,par=0,i=0,m;const nl=()=>{o=o.replace(/[ \t]+$/,'');if(!o.endsWith('\n'))o+='\n';o+='    '.repeat(ind)};
+while(i<c.length){const r=c.slice(i);
+if(m=r.match(/^#\s*(?:include|import)\s*(?:<[^>\n]*>|"[^"\n]*")/)){o+=m[0];nl();i+=m[0].length;continue}
+if(m=r.match(/^(?:"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|\/\/[^\n]*|\/\*[\s\S]*?\*\/)/)){o+=m[0];i+=m[0].length;if(m[0][0]=='/'&&m[0][1]=='/')nl();continue}
+const ch=c[i++];
+if(ch=='('){par++;o+=ch}else if(ch==')'){par=Math.max(0,par-1);o+=ch}
+else if(ch==';'&&!par){o+=';';nl()}
+else if(ch=='{'){o=o.replace(/[ \t]+$/,'')+' {';ind++;nl()}
+else if(ch=='}'){ind=Math.max(0,ind-1);nl();o+='}';if(!/^\s*(?:else\b|while\b|;|,|\))/.test(c.slice(i)))nl()}
+else if(/\s/.test(ch)){if(!/[ \t\n]$/.test(o))o+=' '}
+else o+=ch}
+return o.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim()}
+function md(t){const codes=[];t=t.replace(/\r\n/g,'\n').replace(/```(\w*)[^\n]*\n([\s\S]*?)(?:```|$)/g,(m,l,c)=>{codes.push([l.toLowerCase(),fixCode(c.replace(/\n$/,''),l)]);return '\n@@C'+(codes.length-1)+'@@\n'});
+const L=t.split('\n');let h='',ul=0,tb=[];const cu=()=>{if(ul){h+='</ul>';ul=0}},ct=()=>{if(tb.length){const r=tb.filter(x=>!/^\|?\s*:?-{2,}/.test(x)).map(x=>x.replace(/^\||\|$/g,'').split('|').map(c=>c.trim()));h+='<div class="tw"><table><tr>'+r[0].map(c=>'<th>'+inline(c)+'</th>').join('')+'</tr>'+r.slice(1).map(x=>'<tr>'+x.map(c=>'<td>'+inline(c)+'</td>').join('')+'</tr>').join('')+'</table></div>';tb=[]}};
+for(let l of L){l=l.trim();let m;if(/^\|.*\|$/.test(l)){cu();tb.push(l);continue}ct();
+if(m=l.match(/^@@C(\d+)@@$/)){cu();const [lg,c]=codes[m[1]],ex=EXT[lg]||'txt';h+=`<div class="term" data-x="${ex}"><div class="th"><s></s><s></s><s></s><em>${(lg||'code').toUpperCase()}</em><button onclick="cp(this)" aria-label="Copy code" title="Copy">${I('copy')}<span>Copy</span></button><button class="dlb" onclick="dl(this)" aria-label="Download .${ex}" title="Download .${ex}">${I('dl')}<span>Download .${ex}</span></button><button onclick="sh(this)" aria-label="Share" title="Share">${I('share')}</button><button class="fb" onclick="fold(this)" aria-label="Collapse or expand code" aria-expanded="true" title="Collapse / expand">${I('chevd')}</button></div><div class="cb"><pre class="gut">${c.split('\n').map((_,i)=>i+1).join('\n')}</pre><pre class="cd">${hl(c,lg)}</pre></div></div>`}
+else if(m=l.match(/^[-*•]\s+(.*)/)||l.match(/^\d+[.)]\s+(.*)/)){if(!ul){h+='<ul>';ul=1}h+='<li>'+inline(m[1])+'</li>'}
+else{cu();if(!l)continue;if(m=l.match(/^#{1,4}\s+(.*)/))h+='<h3>'+inline(m[1])+'</h3>';else if(m=l.match(/^>\s?(.*)/)||l.match(/^([“"].{10,}[”"])$/))h+='<blockquote>'+inline(m[1])+'</blockquote>';else h+='<p>'+inline(l)+'</p>'}}
+cu();ct();return h}
+const code=b=>b.closest('.term').querySelector('.cd').textContent;
+function copyText(t){return(navigator.clipboard&&window.isSecureContext?navigator.clipboard.writeText(t):Promise.reject()).catch(()=>{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,a.value.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();if(!ok)throw new Error('copy failed')})}
+function cp(b){copyText(code(b)).then(()=>toast('Copied ✔'),()=>toast('Could not copy – select the text and copy it.'))}
+function dl(b){const x=b.closest('.term').dataset.x,u=URL.createObjectURL(new Blob([code(b)],{type:'text/plain'})),a=document.createElement('a');a.href=u;a.download='showme_code.'+x;a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},4000);toast('Downloading showme_code.'+x)}
+function sh(b){const t=code(b);if(navigator.share)navigator.share({title:'ShowMe code',text:t}).catch(()=>{});else copyText(t).then(()=>toast('Code copied – share it anywhere.'),()=>toast('Could not copy the code.'))}
+function fold(b){const t=b.closest('.term'),f=t.classList.toggle('fold');b.setAttribute('aria-expanded',f?'false':'true')}
+function foldThink(b){const t=b.closest('.think-wrap'),f=t.classList.toggle('fold');b.setAttribute('aria-expanded',f?'false':'true')}
+function renderThinkBox(m){if(m.pending&&think)return'<div class="think-wrap"><div class="thinking-anim"><span></span><span></span><span></span>\u00a0Thinking\u2026</div></div>';if(!m.thinking)return'';return'<div class="think-wrap"><div class="think-th"><span>\ud83d\udcad</span> Thought process'+'<button class="fb" onclick="foldThink(this)" aria-expanded="true" title="Show / hide thinking">'+I('chevd')+'</button></div>'+'<div class="think-body">'+E(m.thinking)+'</div></div>';}
+function hasUrduText(value){return /[\u067E\u0686\u0698\u06A4\u06AF\u0688\u0691\u06BA\u06BE\u06C1\u06CC\u06D2\u06D3\u06D5]/.test(String(value||''))}
+function render(){const c=cur(),has=c&&c.msgs.length;if(document.body.classList.contains('drawer'))close_();$('home').style.display=has?'none':'block';$('msgs').innerHTML=has?c.msgs.map(m=>m.role=='user'?`<div class="msg u"><div class="bub">${E(m.show||m.content).replace(/\n/g,'<br>')}</div></div>`:`<div class="msg a"><div class="bub${(!m.pending&&(m.content||'').indexOf('\x60\x60\x60')>=0)?' w':''}${!m.pending&&hasUrduText(m.content)?' urdu-response':''}">${m.pending?(think?renderThinkBox(m):`<span class="dots"><span>●</span><span>●</span><span>●</span></span>`):`${renderThinkBox(m)}${m.streaming?'<span class="tw-raw">'+E(m.content)+'</span><span class="tw-cursor"></span>':md(m.content)}`}</div></div>`).join(''):'';$('scroll').scrollTop=has?1e9:0}
+function pick(id){$(id).click()}
+function attUI(){const b=$('attbar');b.classList.toggle('s',!!att);b.innerHTML=att?`<span>${att.img?'🖼':'📎'} ${E(att.name)} <a onclick="att=null;attUI()">✕</a></span>`:''}
+function attach(el){const f=el.files[0];el.value='';if(!f)return;
+if(f.type.startsWith('image/')){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);att={img:c.toDataURL('image/jpeg',.8),name:f.name};attUI()};im.src=r.result};r.readAsDataURL(f)}
+else if(/\.(pdf|docx?|xlsx?|pptx?|zip)$/i.test(f.name))alert('Please upload text, code, JSON, CSV or image files.');
+else{const r=new FileReader();r.onload=()=>{att={txt:r.result,name:f.name};attUI()};r.readAsText(f)}}
+function sysPrompt(){let s=`You are ShowMe, a friendly AI assistant (model: ${NAME[S.model]}). Formatting rules:
+1) Comparison of two things: first a 2-3 line intro paragraph, then ONE markdown table comparing both, then key points as bullets.
+2) Explanations/properties/lists: give everything as short bullet points under a short heading.
+3) Essays/articles: write simple flowing paragraphs, and put one or two memorable quotations in double quotes on their own line.
+4) Code: always inside fenced code blocks with the language tag (e.g. \`\`\`c). Put every statement on its own line with proper indentation (never write code on one line). Add a brief explanation after.
+5) Always give complete answers; never stop in the middle of a sentence or list.
+6) CODE LIMIT: write at most 150 lines of code in one reply. If the program needs more, stop at a natural boundary (end of a function or section) and finish with: "Type continue for the next part." When the user says "continue", resume from the exact next line in a new code block, without repeating earlier lines and without re-explaining.
+Memory: you can see the user's previous chats below and the current conversation. If the user repeats or refers to something asked earlier, say so naturally, e.g. "As I told you earlier..." and reuse the earlier answer.`;
+const o=S.chats.filter(c=>c.id!=S.cur).slice(0,12).map(c=>{const u=c.msgs.filter(m=>m.role=='user').slice(-3).map(m=>'Q: '+(m.show||m.content).slice(0,150)),a=c.msgs.filter(m=>m.role=='assistant').slice(-1).map(m=>'A: '+m.content.slice(0,250));return `[${c.title}] `+u.concat(a).join(' | ')}).join('\n');
+if(o)s+='\n\nPREVIOUS CHATS:\n'+o;
+return s}
+async function callAPI(body){
+try{const tk=await token();if(!tk){sessionLost();return'Please sign in again to keep chatting.'}
+const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),295000);
+const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+tk},body:JSON.stringify(body),signal:ctl.signal});clearTimeout(tm);
+const j=await r.json().catch(()=>({}));
+if(r.status==401){sessionLost();return'Your session expired. Please sign in again.'}
+if(!r.ok)return'ShowMe connection error: '+(j.error||('HTTP '+r.status));return j.reply||'The model returned an empty response.'}
+catch(e){return e&&e.name=='AbortError'?'The request took too long. Please try again.':'ShowMe cannot reach the server. Check your internet connection and try again.'}}
+function capCode(t){let n=0,o='',last=0,m;const re=/```[^\n]*\n([\s\S]*?)(```|$)/g;
+while((m=re.exec(t))){const hd=m[0].slice(0,m[0].indexOf('\n')+1),ls=m[1].replace(/\n$/,'').split('\n');
+if(n+ls.length>150)return o+t.slice(last,m.index)+hd+ls.slice(0,150-n).join('\n')+'\n```\n\n**⏸ Stopped at 150 lines. Type "continue" and I will resume from the next line.**';
+n+=ls.length;o+=t.slice(last,m.index+m[0].length);last=m.index+m[0].length;if(!m[2])break}
+return o+t.slice(last)}
+
+/* ======= Think parser ======= */
+function parseThink(text){
+  const thinkRe=/<think>([\s\S]*?)<\/think>/i;
+  const m=text.match(thinkRe);
+  if(m){return{thinkText:m[1].trim(),mainText:text.replace(thinkRe,'').trim()}}
+  return{thinkText:'',mainText:text}
+}
+/* ======= Typewriter animation ======= */
+function typewrite(chat,text){
+  return new Promise(resolve=>{
+    const tokens=text.match(/\S+|\s+/g)||[];
+    let i=0;
+    const msg=chat.msgs[chat.msgs.length-1];
+    const DELAY=18;
+    const id=setInterval(()=>{
+      if(i>=tokens.length){clearInterval(id);resolve();return}
+      const batch=Math.min(3,tokens.length-i);
+      msg.content+=tokens.slice(i,i+batch).join('');
+      i+=batch;
+      const bubbles=$('msgs').querySelectorAll('.msg.a');
+      const last=bubbles[bubbles.length-1];
+      if(last){
+        const rawEl=last.querySelector('.tw-raw');
+        if(rawEl)rawEl.textContent=msg.content;
+        const s=$('scroll');
+        if(stick)s.scrollTop=s.scrollHeight;
+      }
+    },DELAY);
+  });
+}
+async function send(){if(busy)return;const t=$('in').value.trim();if(!t&&!att)return;
+let c=cur();if(!c){c={id:Date.now(),title:(t||att.name).slice(0,34),msgs:[]};S.chats.unshift(c);S.cur=c.id}
+let content=t||(att.img?'Describe this image.':'Summarize this file.'),show=t,img=null;
+if(/^(continue|go on|keep going|resume|carry on|next)[.!\s]*$/i.test(t)){const la=[...c.msgs].reverse().find(m=>m.role=='assistant'&&m.content),bl=la?la.content.match(/```[^\n]*\n[\s\S]*?(?:```|$)/g):null,tl=bl?bl[bl.length-1].replace(/^```[^\n]*\n/,'').replace(/```\s*$/,'').trim().split('\n').slice(-6).join('\n'):'';
+content='Continue exactly where you stopped. '+(tl?'The last code lines shown were:\n```\n'+tl+'\n```\nResume with the very next line in a new code block; do not repeat earlier lines or start over.':'Do not repeat anything already written.')}
+if(att){if(att.img){img=att.img;show=(t?t+'\n':'')+'🖼 '+att.name;if(S.model!='glm-4.6v-flash')setModel('glm-4.6v-flash')}else{content+='\n\n[File: '+att.name+']\n'+att.txt;show=(t?t+'\n':'')+'📎 '+att.name}}
+let hist=c.msgs.filter(m=>!m.pending).map(m=>({role:m.role,content:m.content}));
+hist.push({role:'user',content:img?[{type:'image_url',image_url:{url:img}},{type:'text',text:content}]:content});
+{let tot=0,k=hist.length;while(k>0){tot+=typeof hist[k-1].content=='string'?hist[k-1].content.length:3000;if(tot>350000&&k<hist.length)break;k--}hist=hist.slice(k)}
+c.msgs.push({role:'user',content,show},{role:'assistant',content:'',pending:1});att=null;attUI();$('in').value='';grow();render();renderList();busy=1;
+const body={model:S.model,messages:[{role:'system',content:sysPrompt()},...hist],temperature:.7,think:!!think};
+if(web)body.tools=[{type:'web_search',web_search:{enable:true,search_engine:'search_std'}}];
+const out=await callAPI(body);const {mainText,thinkText}=parseThink(out);const finalText=capCode(mainText);c.msgs[c.msgs.length-1]={role:'assistant',content:'',thinking:thinkText||undefined,streaming:true};render();renderList();await typewrite(c,finalText);c.msgs[c.msgs.length-1]={role:'assistant',content:finalText,thinking:thinkText||undefined};busy=0;save();render();renderList()}
+const coarse=matchMedia&&matchMedia('(pointer:coarse)').matches;
+$('in').addEventListener('keydown',e=>{if(e.key=='Enter'&&!e.shiftKey&&!e.isComposing&&!coarse){e.preventDefault();send()}});
+$('in').addEventListener('input',grow);
+addEventListener('keydown',e=>{if(e.ctrlKey&&e.key=='k'){e.preventDefault();searchOn()}if(e.ctrlKey&&e.key=='n'){e.preventDefault();newChat()}});
+document.querySelectorAll('.md').forEach(m=>m.addEventListener('click',e=>{if(e.target==m)close_()}));
+/* ===== v5 app logic ===== */
+// -- Android sizing: follow the visible area (keyboard, URL bar) so the chat always fills the screen
+let stick=true;
+function fit(){const v=window.visualViewport,r=document.documentElement.style;
+r.setProperty('--app-h',(v?Math.round(v.height*v.scale):innerHeight)+'px');
+r.setProperty('--app-top',(v&&v.scale<=1.01?Math.round(v.offsetTop):0)+'px');
+const c=cur();if(stick&&c&&c.msgs.length){const s=$('scroll');s.scrollTop=s.scrollHeight}}
+fit();addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,200));
+if(window.visualViewport){visualViewport.addEventListener('resize',fit);visualViewport.addEventListener('scroll',fit)}
+$('scroll').addEventListener('scroll',()=>{const s=$('scroll');stick=s.scrollHeight-s.scrollTop-s.clientHeight<140},{passive:true});
+function grow(){const t=$('in');t.style.height='auto';t.style.height=Math.min(t.scrollHeight,140)+'px'}
+
+// -- account block
+function paintMe(){}
+
+// -- sign-in screen
+let AMODE='in';
+function showAuth(m){const a=$('auth');a.classList.toggle('boot',m=='boot');$('aform').style.display=m=='reset'?'none':'';$('arst').style.display=m=='reset'?'block':'none';document.body.classList.remove('in','is-admin','is-owner');$('apw').value='';$('alogo').src=document.querySelector('.hlogo').src}
+function aMode(m){AMODE=m;$('tin').classList.toggle('on',m=='in');$('tup').classList.toggle('on',m=='up');$('asub').textContent=m=='in'?'Sign in':'Create account';$('apw').autocomplete=m=='in'?'current-password':'new-password';$('afg').style.display=m=='in'?'':'none';aerr('')}
+function aerr(t,ok){const e=$('aerr');e.textContent=t||'';e.className='aerr'+(ok?' ok':'')}
+function aBusy(b){['asub','gbtn','afg'].forEach(id=>{const e=$(id);if(e)e.disabled=!!b})}
+function fmtErr(m){m=String(m||'');
+if(/invalid login/i.test(m))return'Wrong e-mail or password.';
+if(/not confirmed/i.test(m))return'Please confirm your e-mail first – check your inbox.';
+if(/already registered/i.test(m))return'This e-mail already has an account. Use Sign in (or Forgot password).';
+if(/password should be|at least/i.test(m))return'Password must be at least 6 characters.';
+if(/rate limit|too many|security purposes/i.test(m))return'Too many tries. Wait a minute and try again.';
+if(/failed to fetch|network/i.test(m))return'No internet connection.';
+return m}
+async function emailGo(){const em=$('aem').value.trim(),pw=$('apw').value;
+if(!em||!pw)return aerr('Enter your e-mail and password.');
+if(!/^\S+@\S+\.\S+$/.test(em))return aerr('That e-mail does not look right.');
+if(AMODE=='up'&&pw.length<6)return aerr('Password must be at least 6 characters.');
+aerr('');
+
+aBusy(1);
+try{if(AMODE=='in'){const r=await sb.auth.signInWithPassword({email:em,password:pw});if(r.error)throw r.error}
+else{const r=await sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin}});if(r.error)throw r.error;
+if(r.data.user&&r.data.user.identities&&!r.data.user.identities.length)throw new Error('already registered');
+if(!r.data.session)aerr('Account created. Open the e-mail we sent, tap the confirmation link, then sign in.',1)}}
+catch(e){aerr(fmtErr(e.message))}aBusy(0)}
+async function forgot(){const em=$('aem').value.trim();if(!/^\S+@\S+\.\S+$/.test(em))return aerr('Type your e-mail in the box above first.');
+aBusy(1);try{const r=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin});if(r.error)throw r.error;aerr('Password reset link sent – check your e-mail.',1)}catch(e){aerr(fmtErr(e.message))}aBusy(0)}
+async function googleIn(){aerr('');
+if(window.AndroidBridge && typeof window.AndroidBridge.signInWithGoogle==='function'){
+  if(!sb){aerr('Connect to the internet, then try Google sign-in again.');return}
+  aBusy(1);window.__showmeGoogleTimeout=setTimeout(()=>aBusy(0),30000);
+  try{window.AndroidBridge.signInWithGoogle();}catch(e){clearTimeout(window.__showmeGoogleTimeout);aBusy(0);aerr('Google sign-in could not start. Check app configuration.')}return;
+}
+if(!sb){aerr('Connect to the internet to sign in.');return}
+aBusy(1);setTimeout(()=>aBusy(0),10000);try{const r=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(r.error)throw r.error}catch(e){aerr(fmtErr(e.message));aBusy(0)}}
+window.onNativeGoogleIdToken=async function(idToken){try{const r=await sb.auth.signInWithIdToken({provider:'google',token:idToken});if(r.error)throw r.error;}catch(e){aerr(fmtErr(e.message));}finally{clearTimeout(window.__showmeGoogleTimeout);aBusy(0)}};
+window.onNativeGoogleSignInError=function(message){clearTimeout(window.__showmeGoogleTimeout);aBusy(0);aerr(message||'Google sign-in was cancelled or failed.')};
+async function setNewPw(){const pw=$('npw').value;if(pw.length<6)return aerr('Password must be at least 6 characters.');
+aBusy(1);try{const r=await sb.auth.updateUser({password:pw});if(r.error)throw r.error;RECOVERY=0;$('npw').value='';toast('Password updated ✔');const g=await sb.auth.getSession();onSession(g.data.session)}catch(e){aerr(fmtErr(e.message))}aBusy(0)}
+
+addEventListener('pageshow',e=>{if(e.persisted)aBusy(0)});  // coming back from Google with the Back button
+
+// -- session handling
+async function onSession(sess){
+if(!sess){curUid=null;S=blank();KEY='sm4_guest';ME={email:'',name:'',avatar:'',isAdmin:false,isOwner:false};closeAll();showAuth();render();renderList();return}
+if(RECOVERY){showAuth('reset');return}
+if(curUid==sess.user.id)return;
+curUid=sess.user.id;
+try{const r=await fetch('/api/me',{headers:{Authorization:'Bearer '+sess.access_token}}),j=await r.json().catch(()=>({}));
+if(!r.ok)throw new Error(j.error||'Could not load your account.');ME=j}
+catch(e){curUid=null;showAuth();aerr(fmtErr(e.message));try{await sb.auth.signOut()}catch(x){}return}
+enterApp(sess.user.id)}
+function enterApp(uid){loadState(uid);setModel(NAME[S.model]?S.model:'glm-4.5-flash');
+document.body.classList.add('in');document.body.classList.toggle('is-admin',!!ME.isAdmin);document.body.classList.toggle('is-owner',!!ME.isOwner);
+paintMe();render();renderList();fit()}
+async function signOut(){close_();try{await sb.auth.signOut()}catch(e){}onSession(null)}
+
+function enterOfflineGuest(){
+  curUid=null;S=blank();KEY='sm4_guest';ME={email:'',name:'Offline mode',avatar:'',isAdmin:false,isOwner:false};
+  closeAll();document.body.classList.add('in');document.body.classList.remove('is-admin','is-owner');
+  try{S=Object.assign(blank(),JSON.parse(LS.get(KEY)||'{}'));if(!Array.isArray(S.chats))S.chats=[]}catch(e){S=blank()}
+  setModel(NAME[S.model]?S.model:'glm-4.5-flash');paintMe();render();renderList();fit();
+  toast('Offline mode — AI replies need internet');
+}
+async function initApp(){showAuth('boot');
+let cfg;try{const r=await fetch('/api/config');cfg=await r.json();if(!r.ok)throw new Error(cfg.error||'The server is not configured.')}catch(e){if(window.AndroidBridge){enterOfflineGuest();return}showAuth();aerr('Cannot start: '+e.message);return}
+if(!window.supabase){if(window.AndroidBridge){enterOfflineGuest();return}showAuth();aerr('Could not load the sign-in library. Check your internet connection and reload.');return}
+sb=supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+sb.auth.onAuthStateChange((ev,sess)=>{setTimeout(()=>{if(ev=='PASSWORD_RECOVERY'){RECOVERY=1;showAuth('reset')}else onSession(sess)},0)});
+const g=await sb.auth.getSession();onSession(g.data.session)}
+
+
+
+initApp();
+
+</script></body></html>
